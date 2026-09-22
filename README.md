@@ -1,6 +1,6 @@
 # Personal Portfolio & Project Showcase
 
-A modern, responsive, and lightweight personal portfolio and live GitHub project showcase website for **Devika Wakode** ([@devaki03](https://github.com/devaki03)).
+A modern, responsive, and lightweight personal portfolio and live GitHub project showcase website for **Devaki Wakode** ([@devaki03](https://github.com/devaki03)).
 
 ## 🌟 Features
 
@@ -27,7 +27,7 @@ my-workspace/
 
 ## 🚀 How to View Locally
 
-Simply double-click [index.html](file:///C:/Users/Devika%20Wakode/.gemini/antigravity/scratch/my-workspace/index.html) to open it in your default web browser (Edge, Chrome, Firefox, etc.).
+Simply open `index.html` in your default web browser (Edge, Chrome, Firefox, etc.).
 
 ## 🌐 Deploy to GitHub Pages (Free Hosting)
 

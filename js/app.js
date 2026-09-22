@@ -1,5 +1,5 @@
 /**
- * Devika Wakode - Personal Portfolio & Project Showcase
+ * Devaki Wakode - Personal Portfolio & Project Showcase
  * Main Application Logic
  */
 

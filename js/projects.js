@@ -1,5 +1,5 @@
 /**
- * Curated list of Devika Wakode's GitHub projects as a fallback
+ * Curated list of Devaki Wakode's GitHub projects as a fallback
  * if the live GitHub API is rate-limited or unavailable.
  */
 const fallbackProjects = [
