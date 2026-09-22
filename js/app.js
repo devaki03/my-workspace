@@ -10,7 +10,9 @@ let activeFilter = 'all';
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initMobileNav();
+  initTypingEffect();
   initProjects();
+  initProjectModal();
   initContactForm();
   initBackToTop();
   updateCurrentYear();
@@ -227,11 +229,22 @@ function renderProjects(projects) {
           <a href="${escapeHtml(project.html_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline">
             Source Code
           </a>
+          <button type="button" class="btn btn-sm btn-outline btn-project-detail" data-repo="${escapeHtml(project.name)}">
+            Details 🔍
+          </button>
           ${demoLink}
         </div>
       </article>
     `;
   }).join('');
+
+  // Attach modal click listeners
+  container.querySelectorAll('.btn-project-detail').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const repoName = btn.getAttribute('data-repo');
+      openProjectModal(repoName);
+    });
+  });
 }
 
 function formatRepoName(name) {
@@ -308,5 +321,157 @@ function updateCurrentYear() {
   const yearSpan = document.getElementById('current-year');
   if (yearSpan) {
     yearSpan.textContent = new Date().getFullYear();
+  }
+}
+
+/* -------------------------------------------------------------
+ * 6. HERO TYPING EFFECT
+ * ------------------------------------------------------------- */
+function initTypingEffect() {
+  const typingElement = document.getElementById('typing-text');
+  if (!typingElement) return;
+
+  const phrases = [
+    "Modern Web Applications",
+    "Responsive User Interfaces",
+    "C++ Algorithms & Data Structures",
+    "Clean & Scalable Code",
+    "Interactive Web Prototypes"
+  ];
+
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  let typingSpeed = 100;
+
+  function type() {
+    const currentPhrase = phrases[phraseIndex];
+
+    if (isDeleting) {
+      typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
+      charIndex--;
+      typingSpeed = 50;
+    } else {
+      typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
+      charIndex++;
+      typingSpeed = 100;
+    }
+
+    if (!isDeleting && charIndex === currentPhrase.length) {
+      // Pause at full phrase
+      typingSpeed = 2000;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      typingSpeed = 400;
+    }
+
+    setTimeout(type, typingSpeed);
+  }
+
+  type();
+}
+
+/* -------------------------------------------------------------
+ * 7. PROJECT DETAILS MODAL
+ * ------------------------------------------------------------- */
+function initProjectModal() {
+  const modal = document.getElementById('project-modal');
+  const closeBtn = document.getElementById('modal-close');
+  const copyBtn = document.getElementById('modal-copy-btn');
+  const cloneInput = document.getElementById('modal-clone-url');
+
+  if (!modal) return;
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.close();
+    });
+  }
+
+  // Close when clicking on backdrop
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.close();
+    }
+  });
+
+  // Copy clone URL button
+  if (copyBtn && cloneInput) {
+    copyBtn.addEventListener('click', () => {
+      cloneInput.select();
+      navigator.clipboard.writeText(cloneInput.value).then(() => {
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = 'Copied! ✓';
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+    });
+  }
+}
+
+function openProjectModal(repoName) {
+  const modal = document.getElementById('project-modal');
+  if (!modal) return;
+
+  const project = allProjects.find(p => p.name === repoName);
+  if (!project) return;
+
+  const titleEl = document.getElementById('modal-title');
+  const descEl = document.getElementById('modal-description');
+  const statsEl = document.getElementById('modal-stats');
+  const topicsEl = document.getElementById('modal-topics');
+  const cloneInput = document.getElementById('modal-clone-url');
+  const githubLink = document.getElementById('modal-github-link');
+  const demoLink = document.getElementById('modal-demo-link');
+
+  if (titleEl) titleEl.textContent = formatRepoName(project.name);
+  if (descEl) descEl.textContent = project.description || 'No description provided for this repository.';
+  
+  if (statsEl) {
+    statsEl.innerHTML = `
+      <span>⭐ ${project.stargazers_count} Stars</span>
+      <span>🍴 ${project.forks_count} Forks</span>
+      <span>💻 ${project.language || 'Code'}</span>
+    `;
+  }
+
+  if (topicsEl) {
+    if (project.topics && project.topics.length > 0) {
+      topicsEl.innerHTML = project.topics
+        .map(t => `<span class="badge badge-lang">#${escapeHtml(t)}</span>`)
+        .join('');
+      topicsEl.style.display = 'flex';
+    } else {
+      topicsEl.innerHTML = '';
+      topicsEl.style.display = 'none';
+    }
+  }
+
+  if (cloneInput) {
+    cloneInput.value = `git clone https://github.com/devaki03/${project.name}.git`;
+  }
+
+  if (githubLink) {
+    githubLink.href = project.html_url;
+  }
+
+  if (demoLink) {
+    if (project.homepage) {
+      demoLink.href = project.homepage;
+      demoLink.style.display = 'inline-flex';
+    } else {
+      demoLink.style.display = 'none';
+    }
+  }
+
+  if (typeof modal.showModal === 'function') {
+    modal.showModal();
+  } else {
+    modal.setAttribute('open', '');
   }
 }

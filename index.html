@@ -50,7 +50,8 @@
             <span>✨</span> Available for new opportunities & collaborations
           </div>
           <h1 class="hero-title">
-            Hi, I'm <span class="gradient-text">Devika Wakode</span>.
+            Hi, I'm <span class="gradient-text">Devika Wakode</span><br>
+            <span class="hero-subtitle-line">I build <span id="typing-text" class="gradient-text"></span><span class="typing-cursor" aria-hidden="true">|</span></span>
           </h1>
           <p class="hero-desc">
             Passionate software developer focused on building intuitive web applications, reliable algorithms, and clean, user-centric digital experiences.
@@ -273,6 +274,32 @@
   <button id="back-to-top" class="back-to-top" aria-label="Back to Top" title="Back to top">
     ↑
   </button>
+
+  <!-- Project Details Modal Dialog -->
+  <dialog id="project-modal" class="project-modal" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-title">Project Details</h3>
+        <button id="modal-close" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="modal-description" class="modal-description"></p>
+        <div class="modal-stats" id="modal-stats"></div>
+        <div class="modal-topics" id="modal-topics"></div>
+        <div class="modal-clone-box">
+          <label for="modal-clone-url" class="modal-clone-label">Clone Repository:</label>
+          <div class="modal-clone-input-group">
+            <input type="text" id="modal-clone-url" class="modal-clone-input" readonly>
+            <button id="modal-copy-btn" class="btn btn-sm btn-outline">Copy</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a id="modal-github-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View on GitHub ↗</a>
+        <a id="modal-demo-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-accent" style="display: none;">Live Demo ↗</a>
+      </div>
+    </div>
+  </dialog>
 
   <!-- Scripts -->
   <script src="js/projects.js"></script>
